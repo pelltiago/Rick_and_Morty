@@ -39,22 +39,19 @@ class MainActivity : AppCompatActivity() {
         {
             if (it != null) {
                 binding.frameLayout.visibility = View.VISIBLE
-                binding.nextBtn.alpha = 1f
-                binding.prevBtn.alpha = 1f
-                binding.nextBtn.isClickable = true
-                binding.prevBtn.isClickable = true
+                binding.prevBtn.isEnabled = charactersViewModel.actualPage != 1
+                binding.nextBtn.isEnabled = charactersViewModel.actualPage != charactersViewModel.maxPage
                 setupRecyclerView(
                     recyclerView,
                     setOnClickListeners(detailFrameLayout, it.results),
                     it
                 )
-                binding.infoPage.text = "  ${charactersViewModel.actualPage} / ${charactersViewModel.maxPage}  "
+                binding.infoPage.text =
+                    "  ${charactersViewModel.actualPage} / ${charactersViewModel.maxPage}  "
             } else {
                 binding.frameLayout.visibility = View.INVISIBLE
-                binding.nextBtn.isClickable = false
-                binding.prevBtn.isClickable = false
-                binding.nextBtn.alpha = 0.5f
-                binding.prevBtn.alpha = 0.5f
+                binding.nextBtn.isEnabled = false
+                binding.prevBtn.isEnabled = false
                 binding.infoPage.text = "  /  "
 
             }
