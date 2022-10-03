@@ -7,7 +7,8 @@ class CharactersRepository {
 
     private val api = CharacterService()
 
-    suspend fun getAllCharacters(page: String): CharactersResponseModel? {
-        return api.getCharacters(page)
+    suspend fun searchCharacters(page: String?, name: String?): CharactersResponseModel? {
+        return api.searchCharacters(page, name)
     }
-}
+
+    }

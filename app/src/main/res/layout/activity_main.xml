@@ -6,6 +6,24 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".ui.view.MainActivity">
+    <androidx.appcompat.widget.SearchView
+        android:paddingTop="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:id="@+id/searchview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:iconifiedByDefault="true"
+        app:searchHintIcon="@drawable/ic_sharp_search_24"
+        app:commitIcon="@drawable/ic_sharp_search_24"
+        app:searchIcon="@drawable/ic_sharp_search_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -13,7 +31,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchview">
 
         <include layout="@layout/item_list" />
     </FrameLayout>
@@ -31,17 +50,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PREV PAGE"
+            android:layout_marginEnd="12dp"
             app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/info_page"
+            />
+
+        <TextView
+            android:id="@+id/info_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/next_btn"
+            app:layout_constraintStart_toEndOf="@id/prev_btn"
+            android:background="@drawable/info_page_pill_text"
+            android:text=" / "
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/nextBtn"
+            android:id="@+id/next_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NEXT PAGE"
-            android:layout_marginStart="22dp"
+            android:layout_marginStart="12dp"
             app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
-            app:layout_constraintStart_toEndOf="@+id/prev_btn" />
+            app:layout_constraintStart_toEndOf="@+id/info_page" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

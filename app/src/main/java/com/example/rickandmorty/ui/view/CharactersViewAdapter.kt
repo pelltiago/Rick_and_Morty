@@ -28,7 +28,7 @@ class CharactersViewAdapter(private val values: List<Results>, private val onCli
             }
 
             with(holder.itemView) {
-                tag = characterResult.id
+                tag = position
                 setOnClickListener(onClickListener)
             }
         }

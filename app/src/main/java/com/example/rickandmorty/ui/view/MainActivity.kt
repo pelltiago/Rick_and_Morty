@@ -1,11 +1,15 @@
 package com.example.rickandmorty.ui.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.R
@@ -16,9 +20,7 @@ import com.example.rickandmorty.ui.viewmodel.CharactersViewModel
 
 class MainActivity : AppCompatActivity() {
 
-
     private lateinit var binding: ActivityMainBinding
-    var pageNumber: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,39 +29,58 @@ class MainActivity : AppCompatActivity() {
         val detailFrameLayout: FrameLayout? = findViewById(R.id.detailFrameLayout)
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val charactersViewModel: CharactersViewModel by viewModels()
-        var maxPageNumber: Int?
-        charactersViewModel.onCreate(pageNumber.toString())
-        charactersViewModel.charactersResponseModel.observe(this, Observer {
+
+        charactersViewModel.onCreate()
+        initSearchView(charactersViewModel)
+        setButtonListeners(charactersViewModel)
+
+
+        charactersViewModel.charactersResponseModel.observe(this, Observer
+        {
             if (it != null) {
-                maxPageNumber = it.info?.pages
-                setupRecyclerView(recyclerView, setOnClickListeners(charactersViewModel, detailFrameLayout, it.results, maxPageNumber), it)
+                binding.frameLayout.visibility = View.VISIBLE
+                binding.nextBtn.alpha = 1f
+                binding.prevBtn.alpha = 1f
+                binding.nextBtn.isClickable = true
+                binding.prevBtn.isClickable = true
+                setupRecyclerView(
+                    recyclerView,
+                    setOnClickListeners(detailFrameLayout, it.results),
+                    it
+                )
+                binding.infoPage.text = "  ${charactersViewModel.actualPage} / ${charactersViewModel.maxPage}  "
+            } else {
+                binding.frameLayout.visibility = View.INVISIBLE
+                binding.nextBtn.isClickable = false
+                binding.prevBtn.isClickable = false
+                binding.nextBtn.alpha = 0.5f
+                binding.prevBtn.alpha = 0.5f
+                binding.infoPage.text = "  /  "
+
             }
         })
     }
 
-    private fun setOnClickListeners(
-        charactersViewModel: CharactersViewModel,
-        detailFrameLayout: FrameLayout?,
-        charactersList: List<Results>,
-        maxPageNumber: Int?
-    ): View.OnClickListener {
-
+    private fun setButtonListeners(charactersViewModel: CharactersViewModel) {
         binding.nextBtn.setOnClickListener {
-            if (pageNumber < maxPageNumber!!) {
-                pageNumber++
-                charactersViewModel.onCreate(pageNumber.toString())
-            }
+            charactersViewModel.onClickNextButton()
         }
 
         binding.prevBtn.setOnClickListener {
-            if (pageNumber > 1) {
-                pageNumber--
-                charactersViewModel.onCreate(pageNumber.toString())
-            }
+            charactersViewModel.onClickPrevButton()
+
         }
+    }
+
+
+    private fun setOnClickListeners(
+        detailFrameLayout: FrameLayout?,
+        charactersList: List<Results>,
+    ): View.OnClickListener {
 
         val onClickListener = View.OnClickListener { itemView ->
-            val id = (itemView.tag.toString().toInt() - 20 * (pageNumber - 1)) - 1
+
+            val id = itemView.tag.toString().toInt()
 
             if (detailFrameLayout != null) {
                 val fragment = DetailFragment().apply {
@@ -98,6 +119,27 @@ class MainActivity : AppCompatActivity() {
     ) {
         recyclerView.adapter =
             CharactersViewAdapter(charactersResponseModel.results, onClickListener)
+    }
+
+    private fun initSearchView(
+        charactersViewModel: CharactersViewModel
+    ) {
+        binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                charactersViewModel.searchCharacter(query, 1)
+                if (query !== "") {
+                    binding.searchview.clearFocus()
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText == "") {
+                    onQueryTextSubmit(newText)
+                }
+                return false
+            }
+        })
     }
 }
 
