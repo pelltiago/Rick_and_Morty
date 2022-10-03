@@ -11,7 +11,7 @@ class CharactersRepositoryTest {
     @Test
     fun getNullWhenPageIsInvalid() = runTest {
         val invalidPage = "999"
-        val charactersResponseModel = charactersRepository.getAllCharacters(invalidPage)
+        val charactersResponseModel = charactersRepository.searchCharacters(invalidPage, "")
         assertNull(charactersResponseModel)
     }
 
