@@ -1,13 +1,10 @@
 
-Mobile demo
-https://user-images.githubusercontent.com/12549958/193361835-8c2f9177-e8d7-40c8-8cbc-9e4aecaa09cb.mp4
-
+# Rick_and_Morty
 
 Tablet demo
-https://user-images.githubusercontent.com/12549958/193360506-653edf24-e5be-4f3b-98e6-2bb1b98cc4e2.mp4
+https://user-images.githubusercontent.com/12549958/193588585-48f7dcb4-b91b-4793-b8b4-1f74942c7413.mp4
 
 
+Mobile demo
+https://user-images.githubusercontent.com/12549958/193588633-03d36820-614c-4386-a63f-25ebfdae3bda.mp4
 
-
-
-# Rick_and_Morty
